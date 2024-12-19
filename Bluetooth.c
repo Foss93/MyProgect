@@ -7,20 +7,20 @@ void ble_stack_init(void)
 {
     ret_code_t err_code;
 
-    // Инициализация SoftDevice
+    // Init SoftDevice
     err_code = nrf_sdh_enable_request();
     APP_ERROR_CHECK(err_code);
 
-    // Конфигурация BLE стека
+    // Configuration BLE stack
     uint32_t ram_start = 0;
     err_code = nrf_sdh_ble_default_cfg_set(APP_BLE_CONN_CFG_TAG, &ram_start);
     APP_ERROR_CHECK(err_code);
 
-    // Включение BLE стека
+    // Enable BLE stack
     err_code = nrf_sdh_ble_enable(&ram_start);
     APP_ERROR_CHECK(err_code);
 
-    // Регистрация обработчика BLE событий
+    // Registering a BLE Event Handler
     NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, NULL);
 }
 
@@ -54,7 +54,6 @@ void gatt_init(void)
     APP_ERROR_CHECK(err_code);
 }
 
-//настройка рекламирования устройства
 void advertising_init(void)
 {
     ret_code_t             err_code;
@@ -177,19 +176,16 @@ void on_sound_char_write(ble_evt_t const * p_ble_evt, void * p_context) {
 
         switch (command) {
             case 0x01:
-                // Воспроизведение первой мелодии
-                //lay_first_melody();
+                // play_first_melody();
                 break;
             case 0x02:
-                // Воспроизведение второй мелодии
                 //play_second_melody();
                 break;
             case 0x03:
-                // Остановка воспроизведения
                 // stop_playing();
                 break;
             default:
-                // Игнорирование других команд
+                // Ignore other command
                 break;
         }
     }

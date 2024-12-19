@@ -27,6 +27,7 @@ void flash_write(uint32_t address, uint32_t *data, uint32_t length) {
     while (nrf_fstorage_is_busy(&fstorage)) {
         __WFE();
     }
+
 }
 
 void flash_read(uint32_t address, uint32_t *data, uint32_t length) {

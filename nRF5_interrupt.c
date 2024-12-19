@@ -1,22 +1,22 @@
 #include"nRF5_interrupt.h"
 
-// Обработчик таймера
 void timer_timeout_handler(void *p_context) {
-    // Эта функция будет вызываться, когда таймер истечет
-    //bsp_board_led_invert(BSP_BOARD_LED_0); // Переключение светодиода для индикации
+
 }
 
 void gpio_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {
     if (pin == INTERRUPT_PIN) {
-        // Здесь будем писать данные акселерометра в память
 
-        //имитриуем что данные поменялись в от акселерометра
+        //simulate that the data has changed from the accelerometer
         accelerometer_data[0]++;
         accelerometer_data[1]++;
         accelerometer_data[1]++;
 
-        //пишем в память
+        //write to memory
         flash_write(ACCELEROMETER_DATA_ADRESS, accelerometer_data, sizeof(accelerometer_data));
+
+        //enter sleep mode
+        sleep_mode_enter();
     }
 }
 

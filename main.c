@@ -92,14 +92,10 @@ size_t size;
 
   Gpio_init();
 
-  timer_init();
-
   fstorage_init();
 
   Bluetooth_init();
 
-  timer_start();
-//////////
 
     /* Enter main loop. */
     for (;;)
