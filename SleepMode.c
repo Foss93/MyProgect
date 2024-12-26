@@ -11,8 +11,8 @@ void sleep_mode_enter(void) {
     // Prepare the system for sleep
     nrf_pwr_mgmt_run();
     
-    // Enter System ON sleep mode
-    __SEV();
-    __WFE();
-    __WFE();
+    //// Enter System ON sleep mode
+    //__SEV();
+    //__WFE();
+    //__WFE();
 }

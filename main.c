@@ -70,6 +70,8 @@
 #include "SleepMode.h"
 #include "bluetooth.h"
 
+extern bool write_accelerometer_data_command;
+
 
 /***********************************************************************************************************************/
 
@@ -80,7 +82,7 @@
 int main(void)
 {
 
-size_t size;
+  size_t size;
                   /* Initially set LED             */
   size=strlen(firsttrack);
   size=strlen(secondtrack);
@@ -92,14 +94,21 @@ size_t size;
 
   Gpio_init();
 
-  fstorage_init();
-
   Bluetooth_init();
 
+  fstorage_init();
 
     /* Enter main loop. */
     for (;;)
     {
+        err_code = NRF_SUCCESS;
+
+        if(write_accelerometer_data_command){
+          Write_Data_Words(ACCELEROMETER_DATA_ADRESS, accelerometer_data, sizeof(accelerometer_data));
+          write_accelerometer_data_command=false;
+        }
+
+        sleep_mode_enter();
 
     }
 }

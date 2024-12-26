@@ -51,16 +51,25 @@
 //==========================================================
 // <e> BLE_DTM_ENABLED - ble_dtm - Module for testing RF/PHY using DTM commands
 //=========================================================
+
+// Включение BLE сервисов и характеристик
+#define BLE_DIS_ENABLED 1
+#define BLE_NUS_ENABLED 1
+
+
+// Включение дескрипторов
+#define BLE_GATTS_ATTR_TAB_SIZE 1408
+
 #ifndef NRF_BLE_CONN_PARAMS_MAX_SUPERVISION_TIMEOUT_DEVIATION
 #define NRF_BLE_CONN_PARAMS_MAX_SUPERVISION_TIMEOUT_DEVIATION 10
 #endif
 
 #ifndef NRF_BLE_CONN_PARAMS_MAX_SLAVE_LATENCY_DEVIATION
-#define NRF_BLE_CONN_PARAMS_MAX_SLAVE_LATENCY_DEVIATION 5
+#define NRF_BLE_CONN_PARAMS_MAX_SLAVE_LATENCY_DEVIATION 10
 #endif
 
 #ifndef NRF_SDH_BLE_PERIPHERAL_LINK_COUNT
-#define NRF_SDH_BLE_PERIPHERAL_LINK_COUNT 5
+#define NRF_SDH_BLE_PERIPHERAL_LINK_COUNT 10
 #endif
 
 // Включение модуля GATT
@@ -116,24 +125,24 @@
 #endif
 
 #ifndef NRF_FSTORAGE_SD_MAX_RETRIES
-#define NRF_FSTORAGE_SD_MAX_RETRIES 5
+#define NRF_FSTORAGE_SD_MAX_RETRIES 8
 #endif
 
 #ifndef NRF_FSTORAGE_SD_MAX_WRITE_SIZE
-#define NRF_FSTORAGE_SD_MAX_WRITE_SIZE 4
+#define NRF_FSTORAGE_SD_MAX_WRITE_SIZE 4096
 #endif
 
 #ifndef NRF_FSTORAGE_SD_QUEUE_SIZE
-#define NRF_FSTORAGE_SD_QUEUE_SIZE 4
+#define NRF_FSTORAGE_SD_QUEUE_SIZE 10
 #endif
 
 #ifndef NRF_FSTORAGE_PARAM_CHECK_DISABLED
 #define NRF_FSTORAGE_PARAM_CHECK_DISABLED 0
 #endif
 
-#ifndef NRF_FSTORAGE_PARAM_CHECK
+/*#ifndef NRF_FSTORAGE_PARAM_CHECK
 #define NRF_FSTORAGE_PARAM_CHECK 1
-#endif
+#endif*/
 
 #ifndef NRF_FSTORAGE_ENABLED
 #define NRF_FSTORAGE_ENABLED 1
@@ -4477,14 +4486,14 @@
 
 // <o> NRF_SDH_BLE_VS_UUID_COUNT - The number of vendor-specific UUIDs. 
 #ifndef NRF_SDH_BLE_VS_UUID_COUNT
-#define NRF_SDH_BLE_VS_UUID_COUNT 0
+#define NRF_SDH_BLE_VS_UUID_COUNT 1
 #endif
 
 // <q> NRF_SDH_BLE_SERVICE_CHANGED  - Include the Service Changed characteristic in the Attribute Table.
  
 
 #ifndef NRF_SDH_BLE_SERVICE_CHANGED
-#define NRF_SDH_BLE_SERVICE_CHANGED 0
+#define NRF_SDH_BLE_SERVICE_CHANGED 1
 #endif
 
 // </h> 
