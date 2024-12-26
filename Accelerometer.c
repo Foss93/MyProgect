@@ -1,7 +1,7 @@
-//В этом файле будет библиотека для работы и инициализации внешнего акселерометра
+//This file will contain the library for working with and initializing the external accelerometer
 #include "Accelerometer.h"
 
-uint32_t accelerometer_data[3]={25,32,48};
+uint32_t accelerometer_data[3]={0,0,0};
 
-uint32_t accelerometer_read_data[3];
+//uint32_t accelerometer_read_data[3];
 

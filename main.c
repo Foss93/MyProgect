@@ -70,6 +70,8 @@
 #include "SleepMode.h"
 #include "bluetooth.h"
 
+extern bool write_accelerometer_data_command;
+
 
 /***********************************************************************************************************************/
 
@@ -79,11 +81,12 @@
 /**@brief Main function of the connectivity application. */
 int main(void)
 {
+  //This is to ensure that the compiler stores the sound array in flash memory, as a declared but unused array will not be included in the code build----------
+  size_t size;
 
-size_t size;
-                  /* Initially set LED             */
   size=strlen(firsttrack);
   size=strlen(secondtrack);
+  //-----------------------------------------------------------------------------------------------------------------------------------------------------------
   
   uint32_t err_code = NRF_SUCCESS;
 
@@ -92,14 +95,30 @@ size_t size;
 
   Gpio_init();
 
-  fstorage_init();
-
   Bluetooth_init();
 
+  fstorage_init();
+
+  //initial initialization of accelerometer data-------------------------------------------------------------
+  flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, accelerometer_data , sizeof(accelerometer_data));
+
+  if(accelerometer_data[0]==0xFFFFFFFF && accelerometer_data[1]==0xFFFFFFFF && accelerometer_data[2]==0xFFFFFFFF){
+    memset(&accelerometer_data, 0, sizeof(accelerometer_data));
+    Write_Data_Words(ACCELEROMETER_DATA_ADRESS, accelerometer_data, sizeof(accelerometer_data));
+  }
+  //---------------------------------------------------------------------------------------------------------
 
     /* Enter main loop. */
     for (;;)
     {
+        err_code = NRF_SUCCESS;
+
+        if(write_accelerometer_data_command){
+          Write_Data_Words(ACCELEROMETER_DATA_ADRESS, accelerometer_data, sizeof(accelerometer_data));
+          write_accelerometer_data_command=false;
+        }
+
+        sleep_mode_enter();
 
     }
 }

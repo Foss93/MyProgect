@@ -1,6 +1,7 @@
 #include "Gpio.h"
 
-void gpiote_init(void) {
+void gpiote_init(void)
+{
     ret_code_t err_code;
 
     if (!nrf_drv_gpiote_is_init()) {
@@ -9,7 +10,8 @@ void gpiote_init(void) {
     }
 }
 
-void gpio_interrupt_init(void) {
+void gpio_interrupt_init(void)
+{
     ret_code_t err_code;
 
     nrf_drv_gpiote_in_config_t in_config = GPIOTE_CONFIG_IN_SENSE_HITOLO(true);
