@@ -2,11 +2,13 @@
 
 bool write_accelerometer_data_command=false;
 
-void timer_timeout_handler(void *p_context) {
+void timer_timeout_handler(void *p_context)
+{
 
 }
 
-void gpio_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action) {//simulate that we have event from accelerometer
+void gpio_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action) //simulate that we have event from accelerometer
+{
     if (pin == INTERRUPT_PIN) {
 
       //read data from accelerometer
@@ -24,10 +26,9 @@ void gpio_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t acti
     }
 }
 
-void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context) {
-    ble_custom_service_t * p_custom_service = (ble_custom_service_t *)p_context;
-
-    
+void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
+{
+    ble_custom_service_t * p_custom_service = (ble_custom_service_t *)p_context;    
     
     uint32_t error_code;
 
@@ -79,6 +80,10 @@ void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context) {
                   }
 
                   error_code = sd_ble_gatts_rw_authorize_reply(p_custom_service->conn_handle, &auth_reply);
+
+                  // Очистка очереди Bluetooth
+                  clear_ble_queue(p_custom_service->conn_handle, p_custom_service->accel_char_handles.value_handle);
+
               }
 
           break;

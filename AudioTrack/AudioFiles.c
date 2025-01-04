@@ -29141,11 +29141,13 @@ const char secondtrack[] = {
 };
 
 
-void play_melody(uint8_t melody_number){
-//functional for playing melody
+void play_melody(uint8_t melody_number)
+{
+  //functional for playing melody
 
 }
 
-void stop_playing(void){
-//functional for stop playing
+void stop_playing(void)
+{
+  //functional for stop playing
 }

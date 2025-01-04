@@ -4,7 +4,7 @@
 #include "stdint.h"
 #include "nrf_delay.h"
 
-#define ACCELEROMETER_DATA_ADRESS 0x000FF000 //уточнить обязательно
+#define ACCELEROMETER_DATA_ADRESS 0x000FF000
 #define ACCELEROMETER_DATA_SIZE 0xC
 
 extern uint32_t accelerometer_data[3];

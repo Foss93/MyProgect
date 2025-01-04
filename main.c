@@ -108,6 +108,7 @@ int main(void)
           write_accelerometer_data_command=false;
         }
 
+        //app_sched_execute();
         sleep_mode_enter();
 
     }
