@@ -4,17 +4,9 @@
 
 ble_custom_service_t m_custom_service;
 
-//NRF_BLE_GQ_DEF(m_ble_gatt_queue,                                    /**< BLE GATT Queue instance. */
-//               NRF_SDH_BLE_CENTRAL_LINK_COUNT,
-//               NRF_BLE_GQ_QUEUE_SIZE);
 NRF_BLE_GATT_DEF(m_gatt);                                                         // GATT module instance.
 NRF_BLE_QWR_DEF(m_qwr);                                                           // Context for the Queued Write module.
 BLE_ADVERTISING_DEF(m_advertising);                                               // Advertising module instance.                                                           /**< Context for the Queued Write module.*/
-
-
-//BLE_HRS_C_DEF(m_hrs_c);
-//BLE_RSCS_C_DEF(m_rscs_c);
-//BLE_DB_DISCOVERY_DEF(m_db_discovery); // Определение экземпляра модуля обнаружения базы данных
 
 
 void qwr_init(void)
@@ -24,7 +16,6 @@ void qwr_init(void)
 
     memset(&qwr_init, 0, sizeof(qwr_init));
 
-    //qwr_init.mem_buffer.len = NRF_SDH_BLE_GATT_MAX_MTU_SIZE;
     qwr_init.error_handler = NULL;
 
     err_code = nrf_ble_qwr_init(&m_qwr, &qwr_init);
@@ -44,16 +35,6 @@ void ble_stack_init(void)
     // Configuration BLE stack
     uint32_t ram_start = 0;
 
-        // Установка конфигурации соединения BLE
-    //ble_cfg_t ble_cfg;
-    //memset(&ble_cfg, 0, sizeof(ble_cfg));
-
-    //ble_cfg.gap_cfg.role_count_cfg.periph_role_count = 1;
-    //ble_cfg.gap_cfg.role_count_cfg.central_role_count = 1;
-    //ble_cfg.gap_cfg.role_count_cfg.central_sec_count = 1;
-    //err_code = sd_ble_cfg_set(BLE_GAP_CFG_CAR_INCL_CONFIG, &ble_cfg, ram_start);
-    //APP_ERROR_CHECK(err_code);
-
     err_code = nrf_sdh_ble_default_cfg_set(APP_BLE_CONN_CFG_TAG, &ram_start);
     APP_ERROR_CHECK(err_code);
 
@@ -62,7 +43,7 @@ void ble_stack_init(void)
     APP_ERROR_CHECK(err_code);
 
     // Registering a BLE Event Handler
-    NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, /*NULL*/ &m_custom_service);
+    NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, &m_custom_service);
 }
 
 void gap_params_init(void)
@@ -95,8 +76,6 @@ void gatt_init(void)
     ret_code_t err_code = nrf_ble_gatt_init(&m_gatt, NULL);
     APP_ERROR_CHECK(err_code);
 
-    //err_code = nrf_ble_gatt_att_mtu_periph_set(&m_gatt, NRF_SDH_BLE_GATT_MAX_MTU_SIZE);
-    //APP_ERROR_CHECK(err_code);
 }
 
 void advertising_init(void)
@@ -106,20 +85,13 @@ void advertising_init(void)
 
     memset(&init, 0, sizeof(init));
 
-    //ble_uuid_t m_adv_uuids[] = 
-    //{
-    //    {BLE_UUID_CUSTOM_SERVICE, BLE_UUID_TYPE_BLE}
-    //};
-
     init.advdata.name_type          = BLE_ADVDATA_FULL_NAME;
     init.advdata.include_appearance = false;
     init.advdata.flags              = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;
-    //init.advdata.uuids_complete.uuid_cnt = sizeof(m_adv_uuids) / sizeof(m_adv_uuids[0]);
-    //init.advdata.uuids_complete.p_uuids  = m_adv_uuids;
 
     init.config.ble_adv_fast_enabled  = true;
-    init.config.ble_adv_fast_interval = 8000; // Advertising interval in 0.625 ms (5000 мс)
-    init.config.ble_adv_fast_timeout  = 0;    // Advertising timeout in seconds (infinite timeout)
+    init.config.ble_adv_fast_interval = ADVERTISING_INTERVAL;
+    init.config.ble_adv_fast_timeout  = ADVERTISING_TIMEOUT;
 
     init.evt_handler = NULL;
 
@@ -169,7 +141,7 @@ void custom_service_init(void)
     ble_uuid.uuid = BLE_UUID_CUSTOM_SERVICE;
 
     // Adding service
-    err_code = sd_ble_gatts_service_add(BLE_GATTS_SRVC_TYPE_PRIMARY /*BLE_GATTS_SRVC_TYPE_INVALID*/, &ble_uuid, &m_custom_service.service_handle);
+    err_code = sd_ble_gatts_service_add(BLE_GATTS_SRVC_TYPE_PRIMARY, &ble_uuid, &m_custom_service.service_handle);
     APP_ERROR_CHECK(err_code);
 
     // Adding characteristic "sound"
@@ -178,7 +150,7 @@ void custom_service_init(void)
     ble_gatts_attr_md_t attr_md;
     ble_gatts_attr_t    attr_char_value;
     ble_uuid_t          char_uuid;
-    uint8_t             initial_value[25];
+    uint8_t             initial_value=0;
 
     memset(&cccd_md, 0, sizeof(cccd_md));
     BLE_GAP_CONN_SEC_MODE_SET_OPEN(&cccd_md.read_perm);
@@ -208,7 +180,7 @@ void custom_service_init(void)
     attr_char_value.init_len  = sizeof(initial_value);
     attr_char_value.init_offs = 0;
     attr_char_value.max_len   = sizeof(initial_value);
-    attr_char_value.p_value   = initial_value;
+    attr_char_value.p_value   = &initial_value;
 
 
     err_code = sd_ble_gatts_characteristic_add(m_custom_service.service_handle,
@@ -236,10 +208,10 @@ void custom_service_init(void)
     memset(&attr_char_value, 0, sizeof(attr_char_value));
     attr_char_value.p_uuid    = &char_uuid;
     attr_char_value.p_attr_md = &attr_md;
-    attr_char_value.init_len  = sizeof(accelerometer_read_data);
+    attr_char_value.init_len  = sizeof(accelerometer_data);
     attr_char_value.init_offs = 0;
-    attr_char_value.max_len   = sizeof(accelerometer_read_data);
-    attr_char_value.p_value   = (uint8_t*)accelerometer_read_data;
+    attr_char_value.max_len   = sizeof(accelerometer_data);
+    attr_char_value.p_value   = (uint8_t*)accelerometer_data;
     
 
 
@@ -280,100 +252,32 @@ void on_sound_char_write(ble_evt_t const * p_ble_evt, void * p_context)
     }
 }
 
-void clear_ble_queue(uint16_t conn_handle, uint16_t char_handle)
-{
-    ble_gatts_hvx_params_t hvx_params;
-    memset(&hvx_params, 0, sizeof(hvx_params));
-
-    hvx_params.handle = char_handle;
-    hvx_params.type = BLE_GATT_HVX_NOTIFICATION;
-    hvx_params.offset = 0;
-    hvx_params.p_len = 0;
-    hvx_params.p_data = NULL;
-
-    uint32_t err_code = sd_ble_gatts_hvx(conn_handle, &hvx_params);
-}
-
-void db_disc_handler(ble_db_discovery_evt_t * p_evt)
-{
-
-}
-
-static void hrs_c_evt_handler(ble_hrs_c_t * p_hrs_c, ble_hrs_c_evt_t * p_hrs_c_evt)
-{
-
-}
-
-//void db_discovery_init(void)
+//void clear_ble_queue(uint16_t conn_handle, uint16_t char_handle)
 //{
-//    ble_db_discovery_init_t db_init;
+//    ble_gatts_hvx_params_t hvx_params;
+//    memset(&hvx_params, 0, sizeof(hvx_params));
 
-//    memset(&db_init, 0, sizeof(ble_db_discovery_init_t));
+//    hvx_params.handle = char_handle;
+//    hvx_params.type = BLE_GATT_HVX_NOTIFICATION;
+//    hvx_params.offset = 0;
+//    hvx_params.p_len = 0;
+//    hvx_params.p_data = NULL;
 
-//    db_init.evt_handler  = db_disc_handler;
-//    db_init.p_gatt_queue = &m_ble_gatt_queue;
-
-//    ret_code_t err_code = ble_db_discovery_init(&db_init);
-//    APP_ERROR_CHECK(err_code);
-//}
-
-//void hrs_c_init(void)
-//{
-//    ret_code_t       err_code;
-//    ble_hrs_c_init_t hrs_c_init_obj;
-
-//    hrs_c_init_obj.evt_handler   = hrs_c_evt_handler;
-//    hrs_c_init_obj.error_handler = NULL;
-//    hrs_c_init_obj.p_gatt_queue  = &m_ble_gatt_queue;
-
-//    err_code = ble_hrs_c_init(&m_hrs_c, &hrs_c_init_obj);
-//    APP_ERROR_CHECK(err_code);
-//}
-
-//static void rscs_c_init(void)
-//{
-//    ret_code_t        err_code;
-//    ble_rscs_c_init_t rscs_c_init_obj;
-
-//    rscs_c_init_obj.evt_handler   = NULL;
-//    rscs_c_init_obj.error_handler = NULL;
-//    rscs_c_init_obj.p_gatt_queue  = &m_ble_gatt_queue;
-
-//    err_code = ble_rscs_c_init(&m_rscs_c, &rscs_c_init_obj);
-//    APP_ERROR_CHECK(err_code);
-//}
-
-//static bool dequeue_event(ble_event_t *event)
-//{
-//uint8_t queue_head = 0;
-
-//    *event = event_queue[queue_head];
-//    queue_head = (queue_head + 1) % QUEUE_SIZE;
-//    return true;
+//    uint32_t err_code = sd_ble_gatts_hvx(conn_handle, &hvx_params);
 //}
 
 void Bluetooth_init (void){
 
   ret_code_t err_code;
-  //qwr_init();
   ble_stack_init();
   gap_params_init();
   gatt_init();
   conn_params_init();
   custom_service_init();
-  //db_discovery_init();
   advertising_init();
   
-  //hrs_c_init();
-  //rscs_c_init();
-  //APP_SCHED_INIT(SCHED_MAX_EVENT_DATA_SIZE, SCHED_QUEUE_SIZE);
-  //app_sched_execute();// Start event Scheduler
-  //NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, &m_custom_service);  
   err_code=ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
-
-   APP_ERROR_CHECK(err_code);
-
-  //sd_ble_gap_adv_start(uint8_t adv_handle, uint8_t conn_cfg_tag)
+  APP_ERROR_CHECK(err_code);
 
 }
 

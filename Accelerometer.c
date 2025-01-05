@@ -3,5 +3,5 @@
 
 uint32_t accelerometer_data[3]={0,0,0};
 
-uint32_t accelerometer_read_data[3];
+//uint32_t accelerometer_read_data[3];
 

@@ -14,7 +14,7 @@ void gpio_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t acti
       //read data from accelerometer
 
       //simulate that the data has changed from the accelerometer
-      flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, accelerometer_read_data , sizeof(accelerometer_read_data));
+      flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, accelerometer_data , sizeof(accelerometer_data));
 
       accelerometer_data[0]++;
       accelerometer_data[1]++;
@@ -67,22 +67,19 @@ void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 
                   if (p_auth_req->request.read.handle == p_custom_service->accel_char_handles.value_handle) {
 
-                    flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, accelerometer_read_data , sizeof(accelerometer_read_data));
+                    flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, accelerometer_data , sizeof(accelerometer_data));
 
                     auth_reply.params.read.gatt_status = BLE_GATT_STATUS_SUCCESS;
                     auth_reply.params.read.update = 1;
                     auth_reply.params.read.offset = 0;
-                    auth_reply.params.read.len = sizeof(accelerometer_read_data);
-                    auth_reply.params.read.p_data = (uint8_t*)accelerometer_read_data;
+                    auth_reply.params.read.len = sizeof(accelerometer_data);
+                    auth_reply.params.read.p_data = (uint8_t*)accelerometer_data;
 
                   } else {
                       auth_reply.params.read.gatt_status = BLE_GATT_STATUS_ATTERR_ATTRIBUTE_NOT_FOUND;
                   }
 
                   error_code = sd_ble_gatts_rw_authorize_reply(p_custom_service->conn_handle, &auth_reply);
-
-                  // Очистка очереди Bluetooth
-                  clear_ble_queue(p_custom_service->conn_handle, p_custom_service->accel_char_handles.value_handle);
 
               }
 

@@ -8,7 +8,7 @@
 #define ACCELEROMETER_DATA_SIZE 0xC
 
 extern uint32_t accelerometer_data[3];
-extern uint32_t accelerometer_read_data[3];
+//extern uint32_t accelerometer_read_data[3];
 
 
 #endif
