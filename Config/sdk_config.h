@@ -46,6 +46,347 @@
 #ifdef USE_APP_CONFIG
 #include "app_config.h"
 #endif
+
+//twi i2c config--------------------------------------------------------------------------------------------
+
+// <e> NRFX_TWIM_ENABLED - nrfx_twim - TWIM peripheral driver
+//==========================================================
+#ifndef NRFX_TWIM_ENABLED
+#define NRFX_TWIM_ENABLED 1
+#endif
+// <q> NRFX_TWIM0_ENABLED  - Enable TWIM0 instance
+ 
+
+#ifndef NRFX_TWIM0_ENABLED
+#define NRFX_TWIM0_ENABLED 1
+#endif
+
+// <q> NRFX_TWIM1_ENABLED  - Enable TWIM1 instance
+ 
+
+#ifndef NRFX_TWIM1_ENABLED
+#define NRFX_TWIM1_ENABLED 0
+#endif
+
+// <o> NRFX_TWIM_DEFAULT_CONFIG_FREQUENCY  - Frequency
+ 
+// <26738688=> 100k 
+// <67108864=> 250k 
+// <104857600=> 400k 
+
+#ifndef NRFX_TWIM_DEFAULT_CONFIG_FREQUENCY
+#define NRFX_TWIM_DEFAULT_CONFIG_FREQUENCY 26738688
+#endif
+
+// <q> NRFX_TWIM_DEFAULT_CONFIG_HOLD_BUS_UNINIT  - Enables bus holding after uninit
+ 
+
+#ifndef NRFX_TWIM_DEFAULT_CONFIG_HOLD_BUS_UNINIT
+#define NRFX_TWIM_DEFAULT_CONFIG_HOLD_BUS_UNINIT 0
+#endif
+
+// <o> NRFX_TWIM_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef NRFX_TWIM_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_TWIM_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#endif
+
+// <e> NRFX_TWI_ENABLED - nrfx_twi - TWI peripheral driver
+//==========================================================
+#ifndef NRFX_TWI_ENABLED
+#define NRFX_TWI_ENABLED 1
+#endif
+// <q> NRFX_TWI0_ENABLED  - Enable TWI0 instance
+ 
+
+#ifndef NRFX_TWI0_ENABLED
+#define NRFX_TWI0_ENABLED 0
+#endif
+
+
+// <q> NRFX_TWI1_ENABLED  - Enable TWI1 instance
+ 
+
+#ifndef NRFX_TWI1_ENABLED
+#define NRFX_TWI1_ENABLED 0
+#endif
+
+// <o> NRFX_TWI_DEFAULT_CONFIG_FREQUENCY  - Frequency
+ 
+// <26738688=> 100k 
+// <67108864=> 250k 
+// <104857600=> 400k 
+
+#ifndef NRFX_TWI_DEFAULT_CONFIG_FREQUENCY
+#define NRFX_TWI_DEFAULT_CONFIG_FREQUENCY 26738688
+#endif
+
+// <q> NRFX_TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT  - Enables bus holding after uninit
+ 
+
+#ifndef NRFX_TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT
+#define NRFX_TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT 0
+#endif
+
+// <o> NRFX_TWI_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef NRFX_TWI_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_TWI_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#endif
+
+// <e> TWI_ENABLED - nrf_drv_twi - TWI/TWIM peripheral driver - legacy layer
+//==========================================================
+#ifndef TWI_ENABLED
+#define TWI_ENABLED 1
+#endif
+// <o> TWI_DEFAULT_CONFIG_FREQUENCY  - Frequency
+ 
+// <26738688=> 100k 
+// <67108864=> 250k 
+// <104857600=> 400k 
+
+#ifndef TWI_DEFAULT_CONFIG_FREQUENCY
+#define TWI_DEFAULT_CONFIG_FREQUENCY 26738688
+#endif
+
+// <q> TWI_DEFAULT_CONFIG_CLR_BUS_INIT  - Enables bus clearing procedure during init
+ 
+
+#ifndef TWI_DEFAULT_CONFIG_CLR_BUS_INIT
+#define TWI_DEFAULT_CONFIG_CLR_BUS_INIT 0
+#endif
+
+// <q> TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT  - Enables bus holding after uninit
+ 
+
+#ifndef TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT
+#define TWI_DEFAULT_CONFIG_HOLD_BUS_UNINIT 0
+#endif
+
+// <o> TWI_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef TWI_DEFAULT_CONFIG_IRQ_PRIORITY
+#define TWI_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#endif
+
+// <e> TWI0_ENABLED - Enable TWI0 instance
+//==========================================================
+#ifndef TWI0_ENABLED
+#define TWI0_ENABLED 1
+#endif
+// <q> TWI0_USE_EASY_DMA  - Use EasyDMA (if present)
+ 
+
+#ifndef TWI0_USE_EASY_DMA
+#define TWI0_USE_EASY_DMA 1
+#endif
+
+// </e>
+
+// <e> TWI1_ENABLED - Enable TWI1 instance
+//==========================================================
+#ifndef TWI1_ENABLED
+#define TWI1_ENABLED 0
+#endif
+// <q> TWI1_USE_EASY_DMA  - Use EasyDMA (if present)
+ 
+
+#ifndef TWI1_USE_EASY_DMA
+#define TWI1_USE_EASY_DMA 0
+#endif
+
+//-----------------------------------------------------------------------------------------------------------
+
+
+
+
+//SPI CONFIG--------------------------------------------------------------------------------------------------
+
+#ifndef SPI_ENABLED
+#define SPI_ENABLED 0
+#endif
+
+#ifndef SPI0_ENABLED
+#define SPI0_ENABLED 0
+#endif
+
+#ifndef SPI0_USE_EASY_DMA
+#define SPI0_USE_EASY_DMA 0
+#endif
+
+#ifndef SPI1_ENABLED
+#define SPI1_ENABLED 0
+#endif
+
+#ifndef SPI2_ENABLED
+#define SPI2_ENABLED 0
+#endif
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef SPI_IRQ_PRIORITY
+#define SPI_IRQ_PRIORITY 6
+#endif
+
+// <o> SPI_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+
+// <i> Priorities 0,2 (nRF51) and 0,1,4,5 (nRF52) are reserved for SoftDevice
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef SPI_DEFAULT_CONFIG_IRQ_PRIORITY
+#define SPI_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#endif
+
+// <o> NRFX_SPI_MISO_PULL_CFG  - MISO pin pull configuration.
+ 
+// <0=> NRF_GPIO_PIN_NOPULL 
+// <1=> NRF_GPIO_PIN_PULLDOWN 
+// <3=> NRF_GPIO_PIN_PULLUP 
+
+#ifndef NRFX_SPI_MISO_PULL_CFG
+#define NRFX_SPI_MISO_PULL_CFG 1
+#endif
+
+#ifndef NRFX_SPI_ENABLED
+#define NRFX_SPI_ENABLED 1
+#endif
+// <q> NRFX_SPI0_ENABLED  - Enable SPI0 instance
+ 
+
+#ifndef NRFX_SPI0_ENABLED
+#define NRFX_SPI0_ENABLED 0
+#endif
+
+// <q> NRFX_SPI1_ENABLED  - Enable SPI1 instance
+ 
+
+#ifndef NRFX_SPI1_ENABLED
+#define NRFX_SPI1_ENABLED 0
+#endif
+
+// <q> NRFX_SPI2_ENABLED  - Enable SPI2 instance
+ 
+
+#ifndef NRFX_SPI2_ENABLED
+#define NRFX_SPI2_ENABLED 0
+#endif
+
+
+// <e> NRFX_SPIM_ENABLED - nrfx_spim - SPIM peripheral driver
+//==========================================================
+#ifndef NRFX_SPIM_ENABLED
+#define NRFX_SPIM_ENABLED 1
+#endif
+// <q> NRFX_SPIM0_ENABLED  - Enable SPIM0 instance
+ 
+
+#ifndef NRFX_SPIM0_ENABLED
+#define NRFX_SPIM0_ENABLED 0
+#endif
+
+// <q> NRFX_SPIM1_ENABLED  - Enable SPIM1 instance
+ 
+
+#ifndef NRFX_SPIM1_ENABLED
+#define NRFX_SPIM1_ENABLED 0
+#endif
+
+// <q> NRFX_SPIM2_ENABLED  - Enable SPIM2 instance
+ 
+
+#ifndef NRFX_SPIM2_ENABLED
+#define NRFX_SPIM2_ENABLED 0
+#endif
+
+// <q> NRFX_SPIM3_ENABLED  - Enable SPIM3 instance
+ 
+
+#ifndef NRFX_SPIM3_ENABLED
+#define NRFX_SPIM3_ENABLED 0
+#endif
+
+// <q> NRFX_SPIM_EXTENDED_ENABLED  - Enable extended SPIM features
+ 
+
+#ifndef NRFX_SPIM_EXTENDED_ENABLED
+#define NRFX_SPIM_EXTENDED_ENABLED 0
+#endif
+
+// <o> NRFX_SPIM_MISO_PULL_CFG  - MISO pin pull configuration.
+ 
+// <0=> NRF_GPIO_PIN_NOPULL 
+// <1=> NRF_GPIO_PIN_PULLDOWN 
+// <3=> NRF_GPIO_PIN_PULLUP 
+
+#ifndef NRFX_SPIM_MISO_PULL_CFG
+#define NRFX_SPIM_MISO_PULL_CFG 1
+#endif
+
+// <o> NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
+ 
+// <0=> 0 (highest) 
+// <1=> 1 
+// <2=> 2 
+// <3=> 3 
+// <4=> 4 
+// <5=> 5 
+// <6=> 6 
+// <7=> 7 
+
+#ifndef NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY
+#define NRFX_SPIM_DEFAULT_CONFIG_IRQ_PRIORITY 6
+#endif
+
+//--------------------------------------------------------------------------------------------------------------
+
+
+
+
 // <h> nRF_BLE 
 // <e> NRF_BLE_QWR_ENABLED - nrf_ble_qwr - Queued writes support module (prepare/execute write)
 //==========================================================
@@ -574,7 +915,7 @@
 // <e> NRFX_SPIS_ENABLED - nrfx_spis - SPIS peripheral driver
 //==========================================================
 #ifndef NRFX_SPIS_ENABLED
-#define NRFX_SPIS_ENABLED 1
+#define NRFX_SPIS_ENABLED 0
 #endif
 // <q> NRFX_SPIS0_ENABLED  - Enable SPIS0 instance
  
@@ -972,7 +1313,7 @@
 // <e> SPIS_ENABLED - nrf_drv_spis - SPIS peripheral driver - legacy layer
 //==========================================================
 #ifndef SPIS_ENABLED
-#define SPIS_ENABLED 1
+#define SPIS_ENABLED 0
 #endif
 // <o> SPIS_DEFAULT_CONFIG_IRQ_PRIORITY  - Interrupt priority
  
@@ -1029,7 +1370,7 @@
  
 
 #ifndef SPIS0_ENABLED
-#define SPIS0_ENABLED 1
+#define SPIS0_ENABLED 0
 #endif
 
 // <q> SPIS1_ENABLED  - Enable SPIS1 instance

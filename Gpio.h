@@ -7,5 +7,6 @@
 #define INTERRUPT_PIN  11  // Button1 (P0.11)
 
 void Gpio_init(void);
+void gpiote_init(void);
 
 #endif

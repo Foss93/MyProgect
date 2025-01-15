@@ -99,14 +99,17 @@
       <file file_name="nRF5_SDK_17.1.0/components/ble/nrf_ble_gatt/nrf_ble_gatt.c" />
       <file file_name="nRF5_SDK_17.1.0/components/ble/nrf_ble_qwr/nrf_ble_qwr.c" />
       <file file_name="nRF5_SDK_17.1.0/integration/nrfx/legacy/nrf_drv_clock.c" />
-      <file file_name="nRF5_SDK_17.1.0/integration/nrfx/legacy/nrf_drv_spis.c" />
+      <file file_name="nRF5_SDK_17.1.0/integration/nrfx/legacy/nrf_drv_spi.c" />
+      <file file_name="nRF5_SDK_17.1.0/integration/nrfx/legacy/nrf_drv_twi.c" />
       <file file_name="nRF5_SDK_17.1.0/integration/nrfx/legacy/nrf_drv_uart.c" />
       <file file_name="nRF5_SDK_17.1.0/modules/nrfx/hal/nrf_nvmc.c" />
       <file file_name="nRF5_SDK_17.1.0/modules/nrfx/soc/nrfx_atomic.c" />
       <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/nrfx_clock.c" />
       <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/nrfx_gpiote.c" />
       <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/prs/nrfx_prs.c" />
-      <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/nrfx_spis.c" />
+      <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/nrfx_spi.c" />
+      <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/nrfx_spim.c" />
+      <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/nrfx_twim.c" />
       <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/nrfx_uart.c" />
       <file file_name="nRF5_SDK_17.1.0/modules/nrfx/drivers/src/nrfx_uarte.c" />
     </folder>
@@ -187,7 +190,6 @@
       <file file_name="nRF5_SDK_17.1.0/components/serialization/connectivity/ser_conn_pkt_decoder.c" />
       <file file_name="nRF5_SDK_17.1.0/components/serialization/common/ser_dbg_sd_str.c" />
       <file file_name="nRF5_SDK_17.1.0/components/serialization/common/transport/ser_hal_transport.c" />
-      <file file_name="nRF5_SDK_17.1.0/components/serialization/common/transport/ser_phy/ser_phy_spi_slave.c" />
     </folder>
     <folder Name="nRF_SoftDevice">
       <file file_name="nRF5_SDK_17.1.0/components/softdevice/common/nrf_sdh.c" />
