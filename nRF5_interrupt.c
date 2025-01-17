@@ -1,27 +1,46 @@
 #include"nRF5_interrupt.h"
 
 bool write_accelerometer_data_command=false;
+bool twim_xfer_done = false;
+bool read_accel_data = false;
 
 void timer_timeout_handler(void *p_context)
 {
 
 }
 
+void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context) {
+        if (p_event->type == NRFX_TWIM_EVT_DONE) {
+        twim_xfer_done = true;
+    }
+}
+
+void bma280_gpio_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
+{
+  if (pin == BMA_INTERRUPT_PIN) {
+
+    read_accel_data=true;
+
+  }
+}
+
 void gpio_interrupt_handler(nrf_drv_gpiote_pin_t pin, nrf_gpiote_polarity_t action) //simulate that we have event from accelerometer
 {
     if (pin == INTERRUPT_PIN) {
 
+      read_accel_data=true;
+
       //read data from accelerometer
 
       //simulate that the data has changed from the accelerometer
-      flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, accelerometer_data , sizeof(accelerometer_data));
+      //flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, (uint32_t*)accelerometer_data , sizeof(accelerometer_data));
 
-      accelerometer_data[0]++;
-      accelerometer_data[1]++;
-      accelerometer_data[2]++;
+      //accelerometer_data[0]++;
+      //accelerometer_data[1]++;
+      //accelerometer_data[2]++;
 
-      //write to memory
-      write_accelerometer_data_command=true;
+      ////write to memory
+      //write_accelerometer_data_command=true;
 
     }
 }

@@ -71,6 +71,7 @@
 #include "bluetooth.h"
 
 extern bool write_accelerometer_data_command;
+extern bool read_accel_data;
 
 
 /***********************************************************************************************************************/
@@ -100,11 +101,11 @@ int main(void)
   fstorage_init();
 
   //initial initialization of accelerometer data-------------------------------------------------------------
-  flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, accelerometer_data , sizeof(accelerometer_data));
+  flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, (uint32_t *)accelerometer_data , sizeof(accelerometer_data));
 
-  if(accelerometer_data[0]==0xFFFFFFFF && accelerometer_data[1]==0xFFFFFFFF && accelerometer_data[2]==0xFFFFFFFF){
+  if(accelerometer_data[0]==-1 && accelerometer_data[1]==-1 && accelerometer_data[2]==-1){
     memset(&accelerometer_data, 0, sizeof(accelerometer_data));
-    Write_Data_Words(ACCELEROMETER_DATA_ADRESS, accelerometer_data, sizeof(accelerometer_data));
+    Write_Data_Words(ACCELEROMETER_DATA_ADRESS, (uint32_t *)accelerometer_data, sizeof(accelerometer_data));
   }
   //---------------------------------------------------------------------------------------------------------
 
@@ -115,10 +116,23 @@ int main(void)
     {
         err_code = NRF_SUCCESS;
 
-        if(write_accelerometer_data_command){
-          Write_Data_Words(ACCELEROMETER_DATA_ADRESS, accelerometer_data, sizeof(accelerometer_data));
-          write_accelerometer_data_command=false;
+        if(read_accel_data){
+          int16_t accel_buf[ACCEL_DATA_SIZE];
+
+          bma280_read_accel_data(&accelerometer_data[0], &accelerometer_data[1], &accelerometer_data[2]);
+
+          flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, (uint32_t *)accel_buf , sizeof(accel_buf));
+
+          if(memcmp(accelerometer_data, accel_buf, ACCEL_DATA_SIZE)){
+            Write_Data_Words(ACCELEROMETER_DATA_ADRESS, (uint32_t *)accelerometer_data, sizeof(accelerometer_data));
+          }
+          read_accel_data=false;
         }
+
+        //if(write_accelerometer_data_command){
+        //  Write_Data_Words(ACCELEROMETER_DATA_ADRESS, accelerometer_data, sizeof(accelerometer_data));
+        //  write_accelerometer_data_command=false;
+        //}
 
         sleep_mode_enter();
 

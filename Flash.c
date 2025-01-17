@@ -26,8 +26,25 @@ void write_data_to_flash(uint32_t address, uint32_t *data, uint32_t length)
 
     ret_code_t rc;
 
-    rc = nrf_fstorage_write(&fstorage, address, data, length, NULL);
-    APP_ERROR_CHECK(rc);
+    int len = length%4;
+
+    len=length+len;
+
+    if(len){
+
+      uint32_t *newData = (uint32_t *)malloc(len); 
+
+      memset(newData, 0, len);
+      memcpy(newData, data, length);
+
+      rc = nrf_fstorage_write(&fstorage, address, newData, len, NULL);
+      APP_ERROR_CHECK(rc);
+      free(newData);
+    }
+    else{
+      rc = nrf_fstorage_write(&fstorage, address, data, length, NULL);
+      APP_ERROR_CHECK(rc);
+    }
 }
 
 void erase_flash_page(uint32_t address)

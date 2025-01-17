@@ -10,7 +10,9 @@
 #define ACCELEROMETER_DATA_ADRESS 0x000FF000
 #define ACCELEROMETER_DATA_SIZE 0xC
 
-extern uint32_t accelerometer_data[3];
+#define ACCEL_DATA_SIZE     3
+
+extern int16_t accelerometer_data[ACCEL_DATA_SIZE];
 //extern uint32_t accelerometer_read_data[3];
 
 //SPI PIN CONFIG---------------------------------------------------------------
@@ -78,8 +80,11 @@ extern uint32_t accelerometer_data[3];
 #define SCL_PIN             27
 #define SDA_PIN             26
 
+#define BMA_INTERRUPT_PIN   3
+
 //---------------------------------------------------------------------------------------------------------------------------
 
 void BMA280Init(void);
+void bma280_read_accel_data(int16_t *x, int16_t *y, int16_t *z);
 
 #endif
