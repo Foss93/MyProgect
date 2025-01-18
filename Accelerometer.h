@@ -82,9 +82,11 @@ extern int16_t accelerometer_data[ACCEL_DATA_SIZE];
 
 #define BMA_INTERRUPT_PIN   3
 
+#define WAIT_EVENT_TIME     APP_TIMER_TICKS(3000) // 3000 ms (5 seconds)
+
 //---------------------------------------------------------------------------------------------------------------------------
 
 void BMA280Init(void);
-void bma280_read_accel_data(int16_t *x, int16_t *y, int16_t *z);
+bool bma280_read_accel_data(int16_t *x, int16_t *y, int16_t *z);
 
 #endif

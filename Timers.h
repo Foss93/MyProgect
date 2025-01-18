@@ -6,6 +6,7 @@
 #include "nRF5_interrupt.h"
 
 void timer_init(void);
-void timer_start(void);
+void timer_start(uint32_t timer_interval);
+void timer_stop (void);
 
 #endif

@@ -3,10 +3,11 @@
 bool write_accelerometer_data_command=false;
 bool twim_xfer_done = false;
 bool read_accel_data = false;
+bool timer_event = false;
 
 void timer_timeout_handler(void *p_context)
 {
-
+  timer_event=true;
 }
 
 void twi_handler(nrf_drv_twi_evt_t const * p_event, void * p_context) {
@@ -86,7 +87,7 @@ void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 
                   if (p_auth_req->request.read.handle == p_custom_service->accel_char_handles.value_handle) {
 
-                    flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, accelerometer_data , sizeof(accelerometer_data));
+                    flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, (uint32_t*)accelerometer_data , sizeof(accelerometer_data));
 
                     auth_reply.params.read.gatt_status = BLE_GATT_STATUS_SUCCESS;
                     auth_reply.params.read.update = 1;

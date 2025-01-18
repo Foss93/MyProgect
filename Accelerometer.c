@@ -2,9 +2,11 @@
 #include "Accelerometer.h"
 #include "Gpio.h"
 #include "nRF5_interrupt.h"
+#include "Timers.h"
 
 int16_t accelerometer_data[ACCEL_DATA_SIZE];
 uint8_t dt;
+extern bool timer_event;
 
 static const nrf_drv_twi_t m_twi = NRF_DRV_TWI_INSTANCE(TWI_INSTANCE_ID);
 //bool twim_xfer_done = false;
@@ -27,40 +29,73 @@ void twi_init(void) {
     nrf_drv_twi_enable(&m_twi);
 }
 
-void bma280_write_register(uint8_t reg, uint8_t value)
+bool bma280_send_data(uint8_t *data, uint8_t len)
+{
+    uint32_t error_code;
+
+    twim_xfer_done = false;
+    error_code = nrf_drv_twi_tx(&m_twi, BMA280_ADDRESS, data, len, false);
+    APP_ERROR_CHECK(error_code);
+
+    timer_event=false;
+    timer_start(WAIT_EVENT_TIME);
+        while (!twim_xfer_done && !timer_event) {
+        __WFE();
+    }
+    timer_stop();
+    if(!twim_xfer_done && timer_event){
+      return false;
+    }
+    return true;
+}
+
+bool bma280_receive_data(uint8_t *data, uint8_t len)
+{
+    uint32_t error_code;
+
+    twim_xfer_done = false;
+    error_code = nrf_drv_twi_rx(&m_twi, BMA280_ADDRESS, data, len);
+    APP_ERROR_CHECK(error_code);
+
+    timer_event=false;
+    timer_start(WAIT_EVENT_TIME);//millisecond
+        while (!twim_xfer_done && !timer_event) {
+        __WFE();
+    }
+    timer_stop();
+    if(!twim_xfer_done && timer_event){
+      return false;
+    }
+
+    return true;
+}
+
+bool bma280_write_register(uint8_t reg, uint8_t value)
 {
     uint8_t tx_buf[2] = {reg, value};
     uint8_t rx_buf;
     uint32_t error_code;
-twim_xfer_done = false;
-    error_code = nrf_drv_twi_tx(&m_twi, BMA280_ADDRESS, tx_buf, 2, false);
-    APP_ERROR_CHECK(error_code);
 
-        while (!twim_xfer_done) {
-        __WFE();
+    if(!bma280_send_data(tx_buf, 2)){
+      return false;
     }
+
+    return true;
 }
 
-uint8_t bma280_read_register(uint8_t reg)
+bool bma280_read_register(uint8_t reg, uint8_t *data)
 {
-    uint8_t rx_buf;
-    uint32_t error_code;
-twim_xfer_done = false;
-    error_code = nrf_drv_twi_tx(&m_twi, BMA280_ADDRESS, &reg, 1, false);
-    APP_ERROR_CHECK(error_code);
+    //uint8_t rx_buf;
 
-        while (!twim_xfer_done) {
-        __WFE();
-    }
-twim_xfer_done = false;
-    error_code = nrf_drv_twi_rx(&m_twi, BMA280_ADDRESS, &rx_buf, 1);
-    APP_ERROR_CHECK(error_code);
-
-        while (!twim_xfer_done) {
-        __WFE();
+    if(!bma280_send_data(&reg, 1)){
+      return false;
     }
 
-    return rx_buf;
+    if(!bma280_receive_data(data, 1)){
+      return false;
+    }
+
+    return true;
 }
 
 void bma280_gpio_interrupt_init(void)
@@ -76,35 +111,32 @@ void bma280_gpio_interrupt_init(void)
     nrf_drv_gpiote_in_event_enable(BMA_INTERRUPT_PIN, true);
 }
 
-void bma280_read_accel_data(int16_t *x, int16_t *y, int16_t *z) {
+bool bma280_read_accel_data(int16_t *x, int16_t *y, int16_t *z) {
     uint8_t data[6];
     uint8_t reg = 0x02; // Начальный регистр данных акселерометра
 
     // Чтение 6 байт данных акселерометра
-    twim_xfer_done = false;
-    ret_code_t err_code = nrf_drv_twi_tx(&m_twi, BMA280_ADDRESS, &reg, 1, false);
-    APP_ERROR_CHECK(err_code);
 
-    while (!twim_xfer_done) {
-        __WFE();
+    if(!bma280_send_data(&reg, 1)){
+      return false;
     }
 
-    twim_xfer_done = false;
-    err_code = nrf_drv_twi_rx(&m_twi, BMA280_ADDRESS, data, 6);
-    APP_ERROR_CHECK(err_code);
-
-    while (!twim_xfer_done) {
-        __WFE();
+    if(!bma280_receive_data(data, 6)){
+      return false;
     }
 
     // Обработка данных акселерометра
     *x = (int16_t)((data[1] << 8) | data[0]) >> 4;
     *y = (int16_t)((data[3] << 8) | data[2]) >> 4;
     *z = (int16_t)((data[5] << 8) | data[4]) >> 4;
+
+    return true;
 }
 
 void BMA280Init(void)
 {
+    timer_init();
+
     twi_init();
     bma280_gpio_interrupt_init();
 

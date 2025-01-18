@@ -14,8 +14,14 @@ void timer_init(void)
     APP_ERROR_CHECK(err_code);
 }
 
-void timer_start(void)
+void timer_start(uint32_t timer_interval)
 {
-    ret_code_t err_code = app_timer_start(m_timer_id, TIMER_INTERVAL, NULL);
+    ret_code_t err_code = app_timer_start(m_timer_id, timer_interval, NULL);
+    APP_ERROR_CHECK(err_code);
+}
+
+void timer_stop (void)
+{
+    ret_code_t err_code = app_timer_stop(m_timer_id);
     APP_ERROR_CHECK(err_code);
 }

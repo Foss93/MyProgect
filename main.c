@@ -119,12 +119,14 @@ int main(void)
         if(read_accel_data){
           int16_t accel_buf[ACCEL_DATA_SIZE];
 
-          bma280_read_accel_data(&accelerometer_data[0], &accelerometer_data[1], &accelerometer_data[2]);
+          if(bma280_read_accel_data(&accelerometer_data[0], &accelerometer_data[1], &accelerometer_data[2])){
 
-          flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, (uint32_t *)accel_buf , sizeof(accel_buf));
+            flash_read((uint32_t)ACCELEROMETER_DATA_ADRESS, (uint32_t *)accel_buf , sizeof(accel_buf));
 
-          if(memcmp(accelerometer_data, accel_buf, ACCEL_DATA_SIZE)){
-            Write_Data_Words(ACCELEROMETER_DATA_ADRESS, (uint32_t *)accelerometer_data, sizeof(accelerometer_data));
+            if(memcmp(accelerometer_data, accel_buf, ACCEL_DATA_SIZE)){
+              Write_Data_Words(ACCELEROMETER_DATA_ADRESS, (uint32_t *)accelerometer_data, sizeof(accelerometer_data));
+            }
+
           }
           read_accel_data=false;
         }
