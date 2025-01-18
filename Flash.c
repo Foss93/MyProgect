@@ -28,9 +28,14 @@ void write_data_to_flash(uint32_t address, uint32_t *data, uint32_t length)
 
     int len = length%4;
 
-    len=length+len;
-
     if(len){
+
+      if(length<4){
+        len=4;
+      }
+      else{
+        len=length+(4-len);
+      }
 
       uint32_t *newData = (uint32_t *)malloc(len); 
 
